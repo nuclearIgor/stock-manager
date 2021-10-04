@@ -22,7 +22,7 @@ public class ProductService {
 
     public Product addProduct(Product product){
 
-        product.setInDate(LocalDate.now());
+        product.setInDate(LocalDate.now().toString());
         return productRepo.save(product);
     }
 
@@ -33,8 +33,8 @@ public class ProductService {
     public Product updateProduct (Product product, Long id){
 
         Integer previousStock = productRepo.getProductStock(id);
-        LocalDate previousInDate = productRepo.getProductInDate(id);
-        LocalDate previousOutDate = productRepo.getProductOutDate(id);
+        String previousInDate = productRepo.getProductInDate(id);
+        String previousOutDate = productRepo.getProductOutDate(id);
 
         if(product.getStock().equals(previousStock)){
             product.setInDate(previousInDate);
@@ -42,12 +42,12 @@ public class ProductService {
         }
 
         if(product.getStock() > previousStock){
-            product.setInDate(LocalDate.now());
+            product.setInDate(LocalDate.now().toString());
             product.setOutDate(previousOutDate);
         }
 
         if(product.getStock() < previousStock){
-            product.setOutDate(LocalDate.now());
+            product.setOutDate(LocalDate.now().toString());
             product.setInDate(previousInDate);
         }
 

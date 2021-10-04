@@ -14,20 +14,20 @@ public class Product implements Serializable {
     private Long id;
     private String productName;
     private Integer stock;
-    private LocalDate inDate;
-    private LocalDate outDate;
+    private String inDate;
+    private String outDate;
 
     public Product() {
     }
 
-    public Product(String productName, Integer stock, LocalDate inDate, LocalDate outDate) {
+    public Product(String productName, Integer stock, String inDate, String outDate) {
         this.productName = productName;
         this.stock = stock;
         this.inDate = inDate;
         this.outDate = outDate;
     }
 
-    public Product(Long id, String productName, Integer stock, LocalDate inDate, LocalDate outDate) {
+    public Product(Long id, String productName, Integer stock, String inDate, String outDate) {
         this.id = id;
         this.productName = productName;
         this.stock = stock;
@@ -59,30 +59,19 @@ public class Product implements Serializable {
         this.stock = stock;
     }
 
-    public LocalDate getInDate() {
+    public String getInDate() {
         return inDate;
     }
 
-    public void setInDate(LocalDate inDate) {
+    public void setInDate(String inDate) {
         this.inDate = inDate;
     }
 
-    public LocalDate getOutDate() {
+    public String getOutDate() {
         return outDate;
     }
 
-    public void setOutDate(LocalDate outDate) {
+    public void setOutDate(String outDate) {
         this.outDate = outDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", product_name='" + productName + '\'' +
-                ", stock=" + stock +
-                ", in_date=" + inDate +
-                ", out_date=" + outDate +
-                '}';
     }
 }

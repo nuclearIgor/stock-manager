@@ -21,8 +21,8 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     Integer getProductStock(Long id);
 
     @Query("SELECT p.inDate FROM Product p WHERE p.id = ?1")
-    LocalDate getProductInDate(Long id);
+    String getProductInDate(Long id);
 
     @Query("SELECT p.outDate FROM Product p WHERE p.id = ?1")
-    LocalDate getProductOutDate(Long id);
+    String getProductOutDate(Long id);
 }

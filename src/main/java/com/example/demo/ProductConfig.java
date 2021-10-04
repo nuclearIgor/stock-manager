@@ -20,15 +20,15 @@ public class ProductConfig {
             Product fruta = new Product(
                     "banana",
                     40,
-                    LocalDate.of(2021, 9, 20),
-                    LocalDate.of(2021, 8, 25)
+                    LocalDate.of(2021, 9, 20).toString(),
+                    LocalDate.of(2021, 8, 25).toString()
             );
 
             Product legume = new Product(
                     "pepino",
                     50,
-                    LocalDate.of(2020, 7, 15),
-                    LocalDate.of(2020, 6, 10)
+                    LocalDate.of(2020, 7, 15).toString(),
+                    LocalDate.of(2020, 6, 10).toString()
             );
 
             repository.saveAll(
