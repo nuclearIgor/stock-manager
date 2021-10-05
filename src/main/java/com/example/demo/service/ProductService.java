@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Entry;
 import com.example.demo.model.Product;
 import com.example.demo.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,49 +15,72 @@ import java.util.Optional;
 @Transactional
 public class ProductService {
     private final ProductRepo productRepo;
+    private final EntryService entryService;
 
     @Autowired
-    public ProductService(ProductRepo productRepo) {
+    public ProductService(ProductRepo productRepo, EntryService entryService) {
         this.productRepo = productRepo;
+        this.entryService = entryService;
     }
 
     public Product addProduct(Product product){
+        Product newProduct = productRepo.save(product);
 
-        product.setInDate(LocalDate.now().toString());
-        return productRepo.save(product);
+        String currentDate = LocalDate.now().toString();
+        String productName = newProduct.getProductName();
+        Long productId = newProduct.getId();
+        Integer productStock = newProduct.getStock();
+
+        Entry newEntry = new Entry();
+        newEntry.setEntryType("entrada");
+        newEntry.setDate(currentDate);
+        newEntry.setQuantity(productStock);
+        newEntry.setProductId(productId);
+        newEntry.setProductName(productName);
+
+        entryService.newEntry(newEntry);
+
+        product.setInDate(currentDate);
+        return newProduct;
     }
 
     public List<Product> findAllProducts(){
         return productRepo.findAll();
     }
 
-    public Product updateProduct (Product product, Long id){
+    public Product updateProduct (Entry entry, Long id){
+        Product product = productRepo.getById(id);
+        Integer quantity = entry.getQuantity();
+        Integer previousStock = product.getStock();
+        String entryType = entry.getEntryType();
 
-        Integer previousStock = productRepo.getProductStock(id);
-        String previousInDate = productRepo.getProductInDate(id);
-        String previousOutDate = productRepo.getProductOutDate(id);
 
-        if(product.getStock().equals(previousStock)){
-            product.setInDate(previousInDate);
-            product.setOutDate(previousOutDate);
+        if(entryType.equals("saída") & quantity > previousStock){
+            throw new IllegalStateException("nao pode");
         }
 
-        if(product.getStock() > previousStock){
-            product.setInDate(LocalDate.now().toString());
-            product.setOutDate(previousOutDate);
-        }
+        entryService.newEntry(entry);
 
-        if(product.getStock() < previousStock){
-            product.setOutDate(LocalDate.now().toString());
-            product.setInDate(previousInDate);
+
+        if (entryType.equals("entrada")){
+            Integer newStock = previousStock + quantity;
+            product.setStock(newStock);
+        }
+        if (entryType.equals("saída")){
+            Integer newStock = previousStock - quantity;
+            product.setStock(newStock);
+        }
+        if(!entry.getProductName().equals(product.getProductName())){
+            product.setProductName(entry.getProductName());
         }
 
         return productRepo.save(product);
     }
 
     public Product findProductById(Long id){
-        return productRepo.findProductById(id).orElseThrow(() -> new IllegalStateException("nao existe"));
-
+//        return productRepo.findProductById(id).orElseThrow(() -> new IllegalStateException("nao existe"));
+//        return productRepo.getById(id);
+        return productRepo.getProductById(id);
     }
 
     public void deleteProduct(Long id){
