@@ -2,12 +2,12 @@ package com.example.demo;
 
 
 import com.example.demo.model.Product;
+import com.example.demo.model.Entry;
 import com.example.demo.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +48,8 @@ public class ProductController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable("id") Long id){
-        Product updatedProduct = productService.updateProduct(product, id);
+    public ResponseEntity<Product> updateProduct(@RequestBody Entry entry, @PathVariable("id") Long id){
+        Product updatedProduct = productService.updateProduct(entry, id);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
