@@ -2,38 +2,32 @@ package com.example.demo;
 
 import com.example.demo.model.Product;
 import com.example.demo.repo.ProductRepo;
+import com.example.demo.service.ProductService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
 
 @Configuration
 public class ProductConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(
-            ProductRepo repository) {
+    CommandLineRunner commandLineRunner(ProductService productService) {
         return args -> {
-            Product fruta = new Product(
-                    "banana",
-                    40,
-                    LocalDate.of(2021, 9, 20).toString(),
-                    LocalDate.of(2021, 8, 25).toString()
-            );
+            Product banana = new Product();
+                   banana.setProductName("banana");
+                   banana.setStock(800);
 
-            Product legume = new Product(
-                    "pepino",
-                    50,
-                    LocalDate.of(2020, 7, 15).toString(),
-                    LocalDate.of(2020, 6, 10).toString()
-            );
+           Product abacate = new Product();
+            abacate.setProductName("abacate");
+            abacate.setStock(25);
 
-            repository.saveAll(
-                    List.of(legume, fruta)
-            );
+            Product item = new Product();
+            item.setProductName("item");
+            item.setStock(1);
+
+            productService.addProduct(banana);
+            productService.addProduct(abacate);
+            productService.addProduct(item);
 
         };
     }

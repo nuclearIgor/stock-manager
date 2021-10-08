@@ -1,6 +1,6 @@
 package com.example.demo;
 
-
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.Product;
 import com.example.demo.model.Entry;
 import com.example.demo.service.ProductService;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -26,18 +25,21 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-//    relatorio
-    @GetMapping("/date/{indate}")
-    public ResponseEntity<Product> findByDate (@PathVariable("indate") String inDate){
-        Product product = productService.findByInDate(inDate);
-        return new ResponseEntity<Product>(product, HttpStatus.OK);
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Product> getProductByName(@PathVariable("name") String name){
+        Product product = productService.findProductByName(name);
+        if(product == null){
+            throw new NotFoundException();
+        }
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
-
-//
 
     @GetMapping("/find/{id}")
     public ResponseEntity<Product> getProductById (@PathVariable("id") Long id){
         Product product = productService.findProductById(id);
+        if(product == null){
+            throw new NotFoundException();
+        }
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
