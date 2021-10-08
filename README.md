@@ -12,9 +12,9 @@ Postgres
 Docker
 
 ## Instalação
-git clone:
-cd folder
-docker-compose up 
+#### git clone git@github.com:nuclearIgor/stock-manager.git
+#### cd stock-manager
+#### docker-compose up 
 
 
 ## Endpoints:
